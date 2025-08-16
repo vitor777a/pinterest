@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinterest Redesign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .pin {
+            column-break-inside: avoid;
+        }
+        .pins-container {
+            column-count: 1;
+            column-gap: 1rem;
+        }
+        @media (min-width: 640px) {
+            .pins-container {
+                column-count: 2;
+            }
+        }
+        @media (min-width: 768px) {
+            .pins-container {
+                column-count: 3;
+            }
+        }
+        @media (min-width: 1024px) {
+            .pins-container {
+                column-count: 4;
+            }
+        }
+        @media (min-width: 1280px) {
+            .pins-container {
+                column-count: 5;
+            }
+        }
+        
+        .search-bar {
+            transition: all 0.3s ease;
+        }
+        .search-bar:focus-within {
+            box-shadow: 0 0 0 4px rgba(236, 72, 153, 0.2);
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .pin:hover .pin-overlay {
+            opacity: 1;
+        }
+        
+        .pin-overlay {
+            transition: opacity 0.2s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center">
+                <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-p text-white text-lg"></i>
+                </div>
+                <span class="ml-2 text-xl font-bold text-red-500 hidden sm:block">Pinterest</span>
+            </a>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 mx-4 max-w-2xl">
+                <div class="search-bar relative w-full flex items-center bg-gray-100 rounded-full px-4 py-2">
+                    <i class="fas fa-search text-gray-500 mr-2"></i>
+                    <input type="text" placeholder="Search for ideas" class="bg-transparent w-full focus:outline-none">
+                    <button class="ml-2 bg-red-500 text-white rounded-full px-4 py-1 text-sm font-medium hover:bg-red-600 transition">
+                        Search
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-1">
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Explore</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Shop</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">About</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Business</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Create</a>
+                <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">News</a>
+            </nav>
+            
+            <!-- User Menu -->
+            <div class="hidden md:flex items-center space-x-2 ml-4">
+                <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-bell text-gray-600"></i>
+                </button>
+                <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                    <i class="fas fa-comment-dots text-gray-600"></i>
+                </button>
+                <button class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center">
+                    <i class="fas fa-user text-white"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3">
+                <div class="search-bar relative w-full flex items-center bg-gray-100 rounded-full px-4 py-2 mb-3">
+                    <i class="fas fa-search text-gray-500 mr-2"></i>
+                    <input type="text" placeholder="Search for ideas" class="bg-transparent w-full focus:outline-none">
+                </div>
+                <nav class="flex flex-col space-y-2">
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Explore</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Shop</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">About</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Business</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">Create</a>
+                    <a href="#" class="nav-link px-4 py-2 rounded-full text-sm font-medium">News</a>
+                </nav>
+                <div class="flex items-center space-x-2 mt-4">
+                    <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-bell text-gray-600"></i>
+                    </button>
+                    <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-comment-dots text-gray-600"></i>
+                    </button>
+                    <button class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center">
+                        <i class="fas fa-user text-white"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Categories -->
+        <div class="flex overflow-x-auto pb-4 mb-6 scrollbar-hide">
+            <div class="flex space-x-2">
+                <button class="px-4 py-2 bg-black text-white rounded-full text-sm font-medium whitespace-nowrap">All</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Home Decor</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Recipes</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Travel</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Fashion</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Art</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Photography</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">DIY</button>
+                <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium whitespace-nowrap hover:bg-gray-200">Weddings</button>
+            </div>
+        </div>
+        
+        <!-- Pins Grid -->
+        <div class="pins-container">
+            <!-- Pin 1 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x450/?interior" alt="Interior design" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">Modern living room interior design with plants</p>
+                    <p class="text-xs text-gray-500">1.2k saves</p>
+                </div>
+            </div>
+            
+            <!-- Pin 2 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x300/?recipe" alt="Recipe" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">Easy 30-minute pasta recipe for busy weeknights</p>
+                    <p class="text-xs text-gray-500">3.5k saves</p>
+                </div>
+            </div>
+            
+            <!-- Pin 3 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x400/?travel" alt="Travel" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">Hidden beaches in Greece you need to visit</p>
+                    <p class="text-xs text-gray-500">8.7k saves</p>
+                </div>
+            </div>
+            
+            <!-- Pin 4 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x500/?fashion" alt="Fashion" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">Summer 2023 fashion trends you'll love</p>
+                    <p class="text-xs text-gray-500">5.1k saves</p>
+                </div>
+            </div>
+            
+            <!-- Pin 5 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x350/?diy" alt="DIY" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">DIY wall art ideas that look expensive</p>
+                    <p class="text-xs text-gray-500">2.3k saves</p>
+                </div>
+            </div>
+            
+            <!-- Pin 6 -->
+            <div class="pin mb-4 break-inside-avoid">
+                <div class="relative rounded-2xl overflow-hidden bg-white shadow-md">
+                    <img src="https://source.unsplash.com/random/300x600/?wedding" alt="Wedding" class="w-full h-auto">
+                    <div class="pin-overlay absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 p-4 flex flex-col justify-between">
+                        <div class="flex justify-end">
+                            <button class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-ellipsis-h text-gray-700"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="w-full bg-red-500 text-white rounded-full py-2 font-medium hover:bg-red-600 transition">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 px-2">
+                    <p class="text-sm font-medium text-gray-900 truncate">Rustic wedding ideas on a budget</p>
+                    <p class="text-xs text-gray-500">4.6k saves</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Load More Button -->
+        <div class="flex justify-center mt-8">
+            <button class="px-6 py-3 bg-gray-100 rounded-full text-sm font-medium hover:bg-gray-200 transition">
+                Load more
+            </button>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <a href="#" class="flex items-center">
+                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-p text-white text-lg"></i>
+                        </div>
+                        <span class="ml-2 text-xl font-bold text-red-500">Pinterest</span>
+                    </a>
+                </div>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">About</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Business</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Blog</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Terms</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Privacy</a>
+                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Help</a>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <button class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium flex items-center">
+                        <i class="fas fa-globe mr-2"></i>
+                        English
+                    </button>
+                </div>
+            </div>
+            <div class="mt-8 text-center text-sm text-gray-500">
+                © 2023 Pinterest. All rights reserved.
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Create Pin Button (Fixed) -->
+    <div class="fixed bottom-6 right-6">
+        <button class="w-14 h-14 bg-red-500 rounded-full flex items-center justify-center shadow-lg hover:bg-red-600 transition">
+            <i class="fas fa-plus text-white text-xl"></i>
+        </button>
+    </div>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Simulate loading more pins
+        document.querySelector('button:contains("Load more")').addEventListener('click', function() {
+            alert('Loading more pins... (This is a demo)');
+        });
+        
+        // Create pin button
+        document.querySelector('.fixed button').addEventListener('click', function() {
+            alert('Create new pin functionality would go here');
+        });
+    </script>
+<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Made with <img src="https://enzostvs-deepsite.hf.space/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://enzostvs-deepsite.hf.space" style="color: #fff;text-decoration: underline;" target="_blank" >DeepSite</a> - 🧬 <a href="https://enzostvs-deepsite.hf.space?remix=ramosxzk/pinterest" style="color: #fff;text-decoration: underline;" target="_blank" >Remix</a></p></body>
+</html>
